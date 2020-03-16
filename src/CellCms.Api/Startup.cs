@@ -10,7 +10,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
 
 namespace CellCms.Api
 {
@@ -27,16 +26,7 @@ namespace CellCms.Api
         public void ConfigureServices(IServiceCollection services)
         {
             // Adicionando a geração do swagger.json
-            services.AddSwaggerGen(cfg =>
-            {
-                cfg.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Title = "Cell CMS",
-                    Description = "API para o Cell CMS",
-                    Version = "v1",
-                    Contact = new OpenApiContact { Name = "Rodolpho Alves", Url = new Uri("https://github.com/rodolphocastro/cell-cms") }
-                });
-            });
+            services.AddCellSwagger(Configuration);
 
             services.AddControllers();
         }
@@ -50,7 +40,7 @@ namespace CellCms.Api
             }
 
             // Usando o Middleware para expor o swagger.json
-            app.UseSwagger();
+            app.UseCellSwaggerJson();
 
             app.UseHttpsRedirection();
 
@@ -64,11 +54,7 @@ namespace CellCms.Api
             });
 
             // Usando o Middleware para export o SwaggerUi
-            app.UseSwaggerUI(cfg =>
-            {
-                cfg.RoutePrefix = string.Empty;
-                cfg.SwaggerEndpoint("/swagger/v1/swagger.json", "Cell CMS API");
-            });
+            app.UseCellSwaggerUi(Configuration);
         }
     }
 }
