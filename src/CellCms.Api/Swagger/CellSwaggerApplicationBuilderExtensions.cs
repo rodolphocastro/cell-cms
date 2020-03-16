@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using System;
 
 namespace Microsoft.AspNetCore.Builder
 {
@@ -20,6 +21,28 @@ namespace Microsoft.AspNetCore.Builder
             }
 
             app.UseSwagger();
+
+            return app;
+        }
+
+        /// <summary>
+        /// Adiciona e configura o middleware para o SwaggerUI.
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="configuration"></param>
+        /// <returns></returns>
+        public static IApplicationBuilder UseCellSwaggerUi(this IApplicationBuilder app, IConfiguration configuration)
+        {
+            if (app is null)
+            {
+                throw new ArgumentNullException(nameof(app));
+            }
+
+            app.UseSwaggerUI(cfg =>
+            {
+                cfg.RoutePrefix = string.Empty;
+                cfg.SwaggerEndpoint("/swagger/v1/swagger.json", "Cell CMS API");
+            });
 
             return app;
         }

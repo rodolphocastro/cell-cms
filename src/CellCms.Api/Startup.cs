@@ -10,7 +10,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
 
 namespace CellCms.Api
 {
@@ -55,11 +54,7 @@ namespace CellCms.Api
             });
 
             // Usando o Middleware para export o SwaggerUi
-            app.UseSwaggerUI(cfg =>
-            {
-                cfg.RoutePrefix = string.Empty;
-                cfg.SwaggerEndpoint("/swagger/v1/swagger.json", "Cell CMS API");
-            });
+            app.UseCellSwaggerUi(Configuration);
         }
     }
 }
