@@ -4,7 +4,12 @@
 
 ### [Em Desenvolvimento] - Adicionado
 
++ Geração do Swagger.Json para documentação da API
++ Swagger UI
+
 ### [Em Desenvolvimento] - Alterado
+
++ `feature/refactor-swagger-config`: Refatora para que as configurações do Swagger fiquem separadas do `Startup.cs`
 
 ### [Em Desenvolvimento] - Corrigido
 
