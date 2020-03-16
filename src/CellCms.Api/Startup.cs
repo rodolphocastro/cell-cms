@@ -41,7 +41,7 @@ namespace CellCms.Api
             }
 
             // Usando o Middleware para expor o swagger.json
-            app.UseSwagger();
+            app.UseCellSwaggerJson();
 
             app.UseHttpsRedirection();
 
