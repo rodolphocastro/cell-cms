@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using CellCms.Api.Settings;
+using Microsoft.Extensions.Configuration;
 using System;
 
 namespace Microsoft.AspNetCore.Builder
@@ -38,10 +39,13 @@ namespace Microsoft.AspNetCore.Builder
                 throw new ArgumentNullException(nameof(app));
             }
 
+            var aadSettings = configuration.GetSection(AzureAdSettings.SettingsKey).Get<AzureAdSettings>();
+
             app.UseSwaggerUI(cfg =>
             {
                 cfg.RoutePrefix = string.Empty;
                 cfg.SwaggerEndpoint("/swagger/v1/swagger.json", "Cell CMS API");
+                cfg.OAuthClientId(aadSettings.ClientId);
             });
 
             return app;
