@@ -6,6 +6,7 @@
 
 + Geração do Swagger.Json para documentação da API
 + Swagger UI
++ Autenticação através do **Azure Active Directory**
 
 ### [Em Desenvolvimento] - Alterado
 
