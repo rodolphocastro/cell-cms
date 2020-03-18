@@ -26,7 +26,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 throw new ArgumentNullException(nameof(services));
             }
 
-            var aadSettings = configuration.GetSection(AzureAdSettings.SettingsKey).Get<AzureAdSettings>();
+            var aadSettings = configuration.GetAzureAdSettings();
 
             services.AddSwaggerGen(cfg =>
             {

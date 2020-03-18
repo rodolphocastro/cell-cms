@@ -11,6 +11,7 @@
 ### [Em Desenvolvimento] - Alterado
 
 + `feature/refactor-swagger-config`: Refatora para que as configurações do Swagger fiquem separadas do `Startup.cs`
++ `feature/refactor-auth-config`: Refatora para que a configuração de Autenticação fique separado do `Startup.cs`
 
 ### [Em Desenvolvimento] - Corrigido
 
