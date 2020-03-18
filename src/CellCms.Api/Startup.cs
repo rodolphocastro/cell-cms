@@ -23,7 +23,7 @@ namespace CellCms.Api
         public void ConfigureServices(IServiceCollection services)
         {
             // Buscando as nossas configurações do Azure AD
-            var aadSettings = Configuration.GetSection(AzureAdSettings.SettingsKey).Get<AzureAdSettings>();
+            var aadSettings = Configuration.GetAzureAdSettings();
 
             if (aadSettings is null)
             {

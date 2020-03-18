@@ -39,7 +39,7 @@ namespace Microsoft.AspNetCore.Builder
                 throw new ArgumentNullException(nameof(app));
             }
 
-            var aadSettings = configuration.GetSection(AzureAdSettings.SettingsKey).Get<AzureAdSettings>();
+            var aadSettings = configuration.GetAzureAdSettings();
 
             app.UseSwaggerUI(cfg =>
             {
