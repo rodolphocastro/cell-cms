@@ -21,5 +21,10 @@ namespace CellCms.Api.Models
         /// Tags pertencentes ao Feed
         /// </summary>
         public ICollection<Tag> Tags { get; set; } = new HashSet<Tag>();
+
+        /// <summary>
+        /// Conteúdos do Feed.
+        /// </summary>
+        public ICollection<Content> Contents { get; set; } = new HashSet<Content>();
     }
 }
