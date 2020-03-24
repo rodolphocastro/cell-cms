@@ -18,6 +18,7 @@
 + `feature/refactor-swagger-config`: Refatora para que as configurações do Swagger fiquem separadas do `Startup.cs`
 + `feature/refactor-auth-config`: Refatora para que a configuração de Autenticação fique separado do `Startup.cs`
 + `feature/refactor-context`: Refatora para que a configuração de Persistência fique separado do `Startup.cs`
++ `feature/migrate-on-run`: Permite que a database seja automaticamente migrada durante a inicialização
 
 ### [Em Desenvolvimento] - Corrigido
 
