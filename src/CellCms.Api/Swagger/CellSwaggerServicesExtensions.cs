@@ -1,10 +1,11 @@
-﻿using CellCms.Api.Constants;
-using CellCms.Api.Settings;
+﻿using System;
+using System.Collections.Generic;
+
+using CellCms.Api.Constants;
 using CellCms.Api.Swagger;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

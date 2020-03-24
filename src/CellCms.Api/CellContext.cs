@@ -1,4 +1,5 @@
 ﻿using CellCms.Api.Models;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace CellCms.Api
@@ -44,6 +45,5 @@ namespace CellCms.Api
 
             modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
         }
-
     }
 }
