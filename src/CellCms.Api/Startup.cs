@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace CellCms.Api
 {
@@ -18,6 +20,13 @@ namespace CellCms.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var contextConnString = Configuration.GetConnectionString(CellContext.ConnectionStringKey);
+            if (string.IsNullOrWhiteSpace(contextConnString))
+            {
+                throw new InvalidOperationException("A configuração do context é obrigatória");
+            }
+            services.AddDbContext<CellContext>(opt => opt.UseSqlite(contextConnString));
+
             // Adicionando os serviços de autenticação
             services.AddCellAuthentication(Configuration);
 
