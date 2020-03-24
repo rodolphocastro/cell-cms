@@ -11,6 +11,7 @@
   + Feed
   + Content
   + Tag
++ `.editorconfig` para reforçar *code style*
 
 ### [Em Desenvolvimento] - Alterado
 
