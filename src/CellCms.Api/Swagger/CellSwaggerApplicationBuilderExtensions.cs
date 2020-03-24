@@ -1,6 +1,6 @@
-﻿using CellCms.Api.Settings;
+﻿using System;
+
 using Microsoft.Extensions.Configuration;
-using System;
 
 namespace Microsoft.AspNetCore.Builder
 {

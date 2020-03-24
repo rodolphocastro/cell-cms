@@ -1,5 +1,6 @@
-﻿using CellCms.Api.Settings;
-using System;
+﻿using System;
+
+using CellCms.Api.Settings;
 
 namespace Microsoft.Extensions.Configuration
 {
