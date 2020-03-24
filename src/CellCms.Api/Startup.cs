@@ -1,3 +1,5 @@
+using System;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -8,24 +10,24 @@ namespace CellCms.Api
 {
     public class Startup
     {
+        private readonly IConfiguration _configuration;
+
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             // Adicionando o Context de persistência
-            services.AddCellPersistence(Configuration);
+            services.AddCellPersistence(_configuration);
 
             // Adicionando os serviços de autenticação
-            services.AddCellAuthentication(Configuration);
+            services.AddCellAuthentication(_configuration);
 
             // Adicionando a geração do swagger.json
-            services.AddCellSwagger(Configuration);
+            services.AddCellSwagger(_configuration);
 
             services.AddControllers();
         }
@@ -48,13 +50,10 @@ namespace CellCms.Api
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
 
             // Usando o Middleware para export o SwaggerUi
-            app.UseCellSwaggerUi(Configuration);
+            app.UseCellSwaggerUi(_configuration);
         }
     }
 }

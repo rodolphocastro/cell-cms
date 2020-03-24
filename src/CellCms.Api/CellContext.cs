@@ -45,6 +45,5 @@ namespace CellCms.Api
 
             modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
         }
-
     }
 }
