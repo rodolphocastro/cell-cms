@@ -63,6 +63,8 @@ namespace Microsoft.Extensions.DependencyInjection
 
             });
 
+            services.AddSwaggerGenNewtonsoftSupport();
+
             return services;
         }
     }

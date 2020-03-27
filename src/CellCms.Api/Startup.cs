@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+using Newtonsoft.Json;
+
 namespace CellCms.Api
 {
     public class Startup
@@ -31,7 +33,13 @@ namespace CellCms.Api
             // Adicionando a geração do swagger.json
             services.AddCellSwagger(_configuration);
 
-            services.AddControllers();
+            services
+                .AddControllers()
+                .AddNewtonsoftJson(c =>
+                {
+                    c.SerializerSettings.MaxDepth = 4;
+                    c.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                });
 
             // Adicionando os elementos do MediatR à injeção de dependência
             services.AddMediatR(GetType().Assembly);
