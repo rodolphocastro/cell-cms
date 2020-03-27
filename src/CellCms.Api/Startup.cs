@@ -1,5 +1,7 @@
 using System;
 
+using MediatR;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -30,6 +32,9 @@ namespace CellCms.Api
             services.AddCellSwagger(_configuration);
 
             services.AddControllers();
+
+            // Adicionando os elementos do MediatR à injeção de dependência
+            services.AddMediatR(GetType().Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
