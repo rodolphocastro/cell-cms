@@ -43,7 +43,7 @@ namespace CellCms.Api.Features.Feeds
         {
             var existingFeed = await _context
                 .Feeds
-                .FindAsync(new object[] { id }, cancellationToken: cancellationToken);
+                .FindAsync(new object[] { id }, cancellationToken);
             if (existingFeed is null)
             {
                 throw new KeyNotFoundException($"Não foi encontrado um feed com id {id}");
