@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,6 +20,8 @@ namespace CellCms.Api.Features.Contents
         public string Titulo { get; set; }
 
         public string Corpo { get; set; }
+
+        public IEnumerable<int> ContentTagsTagId { get; set; }
     }
 
     public class CreateContentHandler : IRequestHandler<CreateContent, Content>
@@ -41,7 +44,8 @@ namespace CellCms.Api.Features.Contents
             {
                 FeedId = request.FeedId,
                 Titulo = request.Titulo,
-                Corpo = request.Corpo
+                Corpo = request.Corpo,
+                ContentTags = request.ContentTagsTagId.Select(c => new ContentTag { TagId = c}).ToList()
             };
 
             return CreateContentInternalAsync(model, cancellationToken);
