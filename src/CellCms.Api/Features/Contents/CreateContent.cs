@@ -21,7 +21,12 @@ namespace CellCms.Api.Features.Contents
 
         public string Corpo { get; set; }
 
-        public IEnumerable<int> ContentTagsTagId { get; set; }
+        public IEnumerable<CreateContentTag> ContentTags { get; set; } = new HashSet<CreateContentTag>();
+
+        public class CreateContentTag
+        {
+            public int TagId { get; set; }
+        }
     }
 
     public class CreateContentHandler : IRequestHandler<CreateContent, Content>
@@ -45,8 +50,8 @@ namespace CellCms.Api.Features.Contents
                 FeedId = request.FeedId,
                 Titulo = request.Titulo,
                 Corpo = request.Corpo,
-                ContentTags = request.ContentTagsTagId.Select(c => new ContentTag { TagId = c}).ToList()
-            };
+                ContentTags = request.ContentTags.Select(c => new ContentTag { TagId = c.TagId }).ToHashSet()
+            };            
 
             return CreateContentInternalAsync(model, cancellationToken);
         }

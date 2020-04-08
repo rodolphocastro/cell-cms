@@ -41,6 +41,6 @@ namespace CellCms.Api.Models
         /// <summary>
         /// Tags relacionadas ao conteúdo.
         /// </summary>
-        public ICollection<ContentTag> ContentTags { get; set; }
+        public ICollection<ContentTag> ContentTags { get; set; } = new HashSet<ContentTag>();
     }
 }
