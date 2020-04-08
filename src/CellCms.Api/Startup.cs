@@ -1,5 +1,7 @@
 using System;
 
+using FluentValidation.AspNetCore;
+
 using MediatR;
 
 using Microsoft.AspNetCore.Builder;
@@ -39,6 +41,11 @@ namespace CellCms.Api
                 {
                     c.SerializerSettings.MaxDepth = 4;
                     c.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                })
+                .AddFluentValidation(c =>
+                {
+                    c.RegisterValidatorsFromAssembly(GetType().Assembly);   // Indicando para que o FluentValidations adicione os AbstractValidator<T> da API à DI
+                    c.RunDefaultMvcValidationAfterFluentValidationExecutes = false; // Indicando para que a validação padrão não seja executada após o FluentValidation
                 });
 
             // Adicionando os elementos do MediatR à injeção de dependência
