@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
+using FluentValidation;
+
 using MediatR;
 
 namespace CellCms.Api.Features.Feeds
@@ -15,6 +17,23 @@ namespace CellCms.Api.Features.Feeds
         public int Id { get; set; }
 
         public string Nome { get; set; }
+    }
+
+    /// <summary>
+    /// Validator para o UpdateFeed.
+    /// </summary>
+    public class UpdateFeedValidator : AbstractValidator<UpdateFeed>
+    {
+        public UpdateFeedValidator()
+        {
+            RuleFor(c => c.Id)
+                .NotEmpty()
+                .GreaterThan(0);
+
+            RuleFor(c => c.Nome)
+                .NotEmpty()
+                .MaximumLength(200);
+        }
     }
 
     /// <summary>

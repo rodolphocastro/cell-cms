@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 
 using CellCms.Api.Models;
 
+using FluentValidation;
+
 using MediatR;
 
 namespace CellCms.Api.Features.Feeds
@@ -17,6 +19,19 @@ namespace CellCms.Api.Features.Feeds
         /// Nome do novo feed.
         /// </summary>
         public string Nome { get; set; }
+    }
+
+    /// <summary>
+    /// Validator para o CreateFeed.
+    /// </summary>
+    public class CreateFeedValidator : AbstractValidator<CreateFeed>
+    {
+        public CreateFeedValidator()
+        {
+            RuleFor(c => c.Nome)
+                .NotEmpty()
+                .MaximumLength(200);
+        }
     }
 
     /// <summary>
@@ -36,12 +51,6 @@ namespace CellCms.Api.Features.Feeds
             if (request is null)
             {
                 throw new ArgumentNullException(nameof(request));
-            }
-
-            // TODO: Depois refatorar para que possamos utilizar uma validação melhor!
-            if (string.IsNullOrWhiteSpace(request.Nome))
-            {
-                throw new ArgumentException("Um nome deve ser informado", nameof(request.Nome));
             }
 
             // TODO: Futuramente mapear de maneira automatica
