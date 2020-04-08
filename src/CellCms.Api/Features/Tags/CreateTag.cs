@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 
 using CellCms.Api.Models;
 
+using FluentValidation;
+
 using MediatR;
 
 namespace CellCms.Api.Features.Tags
@@ -17,6 +19,20 @@ namespace CellCms.Api.Features.Tags
         public int FeedId { get; set; }
 
         public string Nome { get; set; }
+    }
+
+    public class CreateTagValidator : AbstractValidator<CreateTag>
+    {
+        public CreateTagValidator()
+        {
+            RuleFor(t => t.FeedId)
+                .NotEmpty()
+                .GreaterThan(0);
+
+            RuleFor(t => t.Nome)
+                .NotEmpty()
+                .MaximumLength(200);
+        }
     }
 
     public class CreateTagHandler : IRequestHandler<CreateTag, Tag>
