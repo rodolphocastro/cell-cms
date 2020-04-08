@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 using CellCms.Api.Models;
 
+using FluentValidation;
+
 using MediatR;
 
 namespace CellCms.Api.Features.Contents
@@ -26,6 +28,32 @@ namespace CellCms.Api.Features.Contents
         public class UpdateContentTag
         {
             public int TagId { get; set; }
+        }
+    }
+
+    public class UpdateContentValidator : AbstractValidator<UpdateContent>
+    {
+        public UpdateContentValidator()
+        {
+            RuleFor(c => c.Id)
+                .NotEmpty()
+                .GreaterThan(0);
+
+            RuleFor(c => c.Titulo)
+                .NotEmpty()
+                .MaximumLength(200);
+
+            RuleFor(c => c.Corpo)
+                .NotEmpty()
+                .MaximumLength(3000);
+
+            RuleForEach(c => c.ContentTags)
+                .ChildRules(ct =>
+                {
+                    ct.RuleFor(t => t.TagId)
+                        .NotEmpty()
+                        .GreaterThan(0);
+                });
         }
     }
 
@@ -62,7 +90,7 @@ namespace CellCms.Api.Features.Contents
             existingContent.Titulo = titulo;
             existingContent.Corpo = corpo;
             existingContent.ContentTags = contentTags.ToHashSet();
-            
+
             await _context.SaveChangesAsync(cancellationToken);
             return existingContent;
         }

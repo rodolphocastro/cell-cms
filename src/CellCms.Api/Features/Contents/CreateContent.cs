@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 using CellCms.Api.Models;
 
+using FluentValidation;
+
 using MediatR;
 
 namespace CellCms.Api.Features.Contents
@@ -26,6 +28,32 @@ namespace CellCms.Api.Features.Contents
         public class CreateContentTag
         {
             public int TagId { get; set; }
+        }
+    }
+
+    public class CreateContentValidator : AbstractValidator<CreateContent>
+    {
+        public CreateContentValidator()
+        {
+            RuleFor(c => c.FeedId)
+                .NotEmpty()
+                .GreaterThan(0);
+
+            RuleFor(c => c.Titulo)
+                .NotEmpty()
+                .MaximumLength(200);
+
+            RuleFor(c => c.Corpo)
+                .NotEmpty()
+                .MaximumLength(3000);
+
+            RuleForEach(c => c.ContentTags)
+                .ChildRules(ct =>
+                {
+                    ct.RuleFor(t => t.TagId)
+                        .NotEmpty()
+                        .GreaterThan(0);
+                });
         }
     }
 
@@ -51,7 +79,7 @@ namespace CellCms.Api.Features.Contents
                 Titulo = request.Titulo,
                 Corpo = request.Corpo,
                 ContentTags = request.ContentTags.Select(c => new ContentTag { TagId = c.TagId }).ToHashSet()
-            };            
+            };
 
             return CreateContentInternalAsync(model, cancellationToken);
         }
