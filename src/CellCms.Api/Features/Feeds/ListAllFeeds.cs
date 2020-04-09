@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-
+using AutoMapper;
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
@@ -27,12 +27,12 @@ namespace CellCms.Api.Features.Feeds
         /// <summary>
         /// Lista dos nomes das tags.
         /// </summary>
-        public IEnumerable<string> TagsNome { get; set; }
+        public IEnumerable<string> TagsNomes { get; set; }
 
         /// <summary>
         /// Lista dos títulos dos conteúdos.
         /// </summary>
-        public IEnumerable<string> ContentsTitulo { get; set; }
+        public IEnumerable<string> ContentsTitulos { get; set; }
 
     }
 
@@ -42,10 +42,12 @@ namespace CellCms.Api.Features.Feeds
     public class ListAllFeedsHandler : IRequestHandler<ListAllFeeds, IEnumerable<ListFeed>>
     {
         private readonly CellContext _context;
+        private readonly IMapper _mapper;
 
-        public ListAllFeedsHandler(CellContext context)
+        public ListAllFeedsHandler(CellContext context, IMapper mapper)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public Task<IEnumerable<ListFeed>> Handle(ListAllFeeds request, CancellationToken cancellationToken)
@@ -68,15 +70,7 @@ namespace CellCms.Api.Features.Feeds
                 .ToListAsync(cancellationToken);
 
             // Futuramente vamos fazer o mapeamento automaticamente!
-            return result.Select(
-                r => new ListFeed
-                {
-                    Id = r.Id,
-                    Nome = r.Nome,
-                    ContentsTitulo = r.Contents.Select(c => c.Titulo),
-                    TagsNome = r.Tags.Select(t => t.Nome)
-                }
-                );
+            return _mapper.Map<IEnumerable<ListFeed>>(result);
         }
     }
 }
