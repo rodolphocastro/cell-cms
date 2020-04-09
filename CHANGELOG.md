@@ -11,6 +11,7 @@
   + Feed
   + Content
   + Tag
++ Validação dos payloads através do **FluentValidation**
 + `.editorconfig` para reforçar *code style*
 
 ### [Em Desenvolvimento] - Alterado
@@ -19,6 +20,7 @@
 + `feature/refactor-auth-config`: Refatora para que a configuração de Autenticação fique separado do `Startup.cs`
 + `feature/refactor-context`: Refatora para que a configuração de Persistência fique separado do `Startup.cs`
 + `feature/migrate-on-run`: Permite que a database seja automaticamente migrada durante a inicialização
++ `feature/auto-mapper`: Permite o mapeamento automático entre models, commands e queries
 
 ### [Em Desenvolvimento] - Corrigido
 
