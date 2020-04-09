@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+
 using AutoMapper;
 
 using CellCms.Api.Models;
@@ -17,7 +18,11 @@ namespace CellCms.Api.Features.Feeds
             // Aqui indicamos para o AutoMapper criar, por inferência, o mapeamento entre o UpdateFeed e o Feed
             CreateMap<UpdateFeed, Feed>();
             // Aqui indicamos que o AutoMapepr poderá mapear entre dois objetos do mesmo tipo
-            CreateMap<Feed, Feed>();
+            // Porém dizemos que algumas propriedades devem ser ignoradas!
+            // Isso é muito importante para não acabarmos atualizando campos que não queremos! Por exemplo relacionamentos!
+            CreateMap<Feed, Feed>()
+                .ForMember(d => d.Contents, opt => opt.Ignore())
+                .ForMember(d => d.Tags, opt => opt.Ignore());
             // Para Mapearmos de um Feed para um ListFeed precisamos configurar um mapeamento de Tags para IEnumerable<string> e Contents para IEnumerable<string>
             // O método ForMember nos permite configurar este mapeando e utilizarmos LINQ para escolher qual campo queremos traze do Content/Tag para o ListFeed
             CreateMap<Feed, ListFeed>()
