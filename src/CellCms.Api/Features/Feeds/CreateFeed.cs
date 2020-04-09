@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-
+using AutoMapper;
 using CellCms.Api.Models;
 
 using FluentValidation;
@@ -33,17 +33,19 @@ namespace CellCms.Api.Features.Feeds
                 .MaximumLength(200);
         }
     }
-
+    
     /// <summary>
     /// Handler para a criação de feeds.
     /// </summary>
     public class CreateFeedHandler : IRequestHandler<CreateFeed, Feed>
     {
         private readonly CellContext _context;
+        private readonly IMapper _mapper;
 
-        public CreateFeedHandler(CellContext context)
+        public CreateFeedHandler(CellContext context, IMapper mapper)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public Task<Feed> Handle(CreateFeed request, CancellationToken cancellationToken)
@@ -54,10 +56,7 @@ namespace CellCms.Api.Features.Feeds
             }
 
             // TODO: Futuramente mapear de maneira automatica
-            var feed = new Feed
-            {
-                Nome = request.Nome
-            };
+            var feed = _mapper.Map<Feed>(request);
 
             // Separamos os métodos para que o compilador possa otimizar.
             // No método principal realizamos apenas operações sincronas

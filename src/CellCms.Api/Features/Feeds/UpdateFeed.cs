@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-
+using AutoMapper;
+using CellCms.Api.Models;
 using FluentValidation;
 
 using MediatR;
@@ -42,10 +43,12 @@ namespace CellCms.Api.Features.Feeds
     public class UpdateFeedHandler : IRequestHandler<UpdateFeed>
     {
         private readonly CellContext _context;
+        private readonly IMapper _mapper;
 
-        public UpdateFeedHandler(CellContext context)
+        public UpdateFeedHandler(CellContext context, IMapper mapper)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
         public Task<Unit> Handle(UpdateFeed request, CancellationToken cancellationToken)
         {
@@ -54,21 +57,23 @@ namespace CellCms.Api.Features.Feeds
                 throw new ArgumentNullException(nameof(request));
             }
 
-            return UpdateFeedInternalAsync(request.Id, request.Nome, cancellationToken);
+            var updatedModel = _mapper.Map<Feed>(request);
+
+            return UpdateFeedInternalAsync(updatedModel, cancellationToken);
         }
 
-        private async Task<Unit> UpdateFeedInternalAsync(int id, string nome, CancellationToken cancellationToken)
+        private async Task<Unit> UpdateFeedInternalAsync(Feed updated, CancellationToken cancellationToken)
         {
             var existingFeed = await _context
                 .Feeds
-                .FindAsync(new object[] { id }, cancellationToken);
+                .FindAsync(new object[] { updated.Id }, cancellationToken);
 
             if (existingFeed is null)
             {
-                throw new KeyNotFoundException($"Não foi encontrado um feed com id {id}");
+                throw new KeyNotFoundException($"Não foi encontrado um feed com id {updated.Id}");
             }
 
-            existingFeed.Nome = nome;
+            _mapper.Map(updated, existingFeed);
 
             await _context.SaveChangesAsync(cancellationToken);
             return Unit.Value;

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
+using AutoMapper;
+
 using CellCms.Api.Models;
 
 using FluentValidation;
@@ -38,10 +40,12 @@ namespace CellCms.Api.Features.Tags
     public class UpdateTagHandler : IRequestHandler<UpdateTag>
     {
         private readonly CellContext _context;
+        private readonly IMapper _mapper;
 
-        public UpdateTagHandler(CellContext context)
+        public UpdateTagHandler(CellContext context, IMapper mapper)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public Task<Unit> Handle(UpdateTag request, CancellationToken cancellationToken)
@@ -51,11 +55,7 @@ namespace CellCms.Api.Features.Tags
                 throw new ArgumentNullException(nameof(request));
             }
 
-            var model = new Tag
-            {
-                Id = request.Id,
-                Nome = request.Nome
-            };
+            var model = _mapper.Map<Tag>(request);
 
             return UpdateTagInternalAsync(model, cancellationToken);
         }
@@ -71,7 +71,7 @@ namespace CellCms.Api.Features.Tags
                 throw new KeyNotFoundException($"Nenhum tag encontrada para o id {model.Id}");
             }
 
-            existingModel.Nome = model.Nome;
+            _mapper.Map(model, existingModel);
             await _context.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;

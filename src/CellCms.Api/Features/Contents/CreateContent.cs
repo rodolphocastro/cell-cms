@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using AutoMapper;
+
 using CellCms.Api.Models;
 
 using FluentValidation;
@@ -23,12 +25,7 @@ namespace CellCms.Api.Features.Contents
 
         public string Corpo { get; set; }
 
-        public IEnumerable<CreateContentTag> ContentTags { get; set; } = new HashSet<CreateContentTag>();
-
-        public class CreateContentTag
-        {
-            public int TagId { get; set; }
-        }
+        public IEnumerable<int> TagsId = new List<int>();
     }
 
     public class CreateContentValidator : AbstractValidator<CreateContent>
@@ -47,23 +44,21 @@ namespace CellCms.Api.Features.Contents
                 .NotEmpty()
                 .MaximumLength(3000);
 
-            RuleForEach(c => c.ContentTags)
-                .ChildRules(ct =>
-                {
-                    ct.RuleFor(t => t.TagId)
-                        .NotEmpty()
-                        .GreaterThan(0);
-                });
+            RuleForEach(c => c.TagsId)
+                .GreaterThan(0);
+
         }
     }
 
     public class CreateContentHandler : IRequestHandler<CreateContent, Content>
     {
         private readonly CellContext _context;
+        private readonly IMapper _mapper;
 
-        public CreateContentHandler(CellContext context)
+        public CreateContentHandler(CellContext context, IMapper mapper)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public Task<Content> Handle(CreateContent request, CancellationToken cancellationToken)
@@ -73,13 +68,15 @@ namespace CellCms.Api.Features.Contents
                 throw new ArgumentNullException(nameof(request));
             }
 
-            var model = new Content
-            {
-                FeedId = request.FeedId,
-                Titulo = request.Titulo,
-                Corpo = request.Corpo,
-                ContentTags = request.ContentTags.Select(c => new ContentTag { TagId = c.TagId }).ToHashSet()
-            };
+            //var model = new Content
+            //{
+            //    FeedId = request.FeedId,
+            //    Titulo = request.Titulo,
+            //    Corpo = request.Corpo,
+            //    ContentTags = request.ContentTags.Select(c => new ContentTag { TagId = c.TagId }).ToHashSet()
+            //};
+
+            var model = _mapper.Map<Content>(request);
 
             return CreateContentInternalAsync(model, cancellationToken);
         }

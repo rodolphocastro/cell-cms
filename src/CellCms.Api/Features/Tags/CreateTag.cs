@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
+using AutoMapper;
+
 using CellCms.Api.Models;
 
 using FluentValidation;
@@ -38,10 +40,12 @@ namespace CellCms.Api.Features.Tags
     public class CreateTagHandler : IRequestHandler<CreateTag, Tag>
     {
         private readonly CellContext _context;
+        private readonly IMapper _mapper;
 
-        public CreateTagHandler(CellContext context)
+        public CreateTagHandler(CellContext context, IMapper mapper)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public Task<Tag> Handle(CreateTag request, CancellationToken cancellationToken)
@@ -51,11 +55,7 @@ namespace CellCms.Api.Features.Tags
                 throw new ArgumentNullException(nameof(request));
             }
 
-            var model = new Tag
-            {
-                FeedId = request.FeedId,
-                Nome = request.Nome
-            };
+            var model = _mapper.Map<Tag>(request);
 
             return CreateTagInternalAsync(model, cancellationToken);
         }

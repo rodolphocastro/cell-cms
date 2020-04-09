@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+
+using AutoMapper;
 
 using CellCms.Api.Models;
 
 using FluentValidation;
 
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace CellCms.Api.Features.Contents
 {
@@ -23,12 +25,7 @@ namespace CellCms.Api.Features.Contents
 
         public string Corpo { get; set; }
 
-        public IEnumerable<UpdateContentTag> ContentTags { get; set; } = new HashSet<UpdateContentTag>();
-
-        public class UpdateContentTag
-        {
-            public int TagId { get; set; }
-        }
+        public IEnumerable<int> TagsId = new List<int>();
     }
 
     public class UpdateContentValidator : AbstractValidator<UpdateContent>
@@ -47,23 +44,20 @@ namespace CellCms.Api.Features.Contents
                 .NotEmpty()
                 .MaximumLength(3000);
 
-            RuleForEach(c => c.ContentTags)
-                .ChildRules(ct =>
-                {
-                    ct.RuleFor(t => t.TagId)
-                        .NotEmpty()
-                        .GreaterThan(0);
-                });
+            RuleForEach(c => c.TagsId)
+                .GreaterThan(0);
         }
     }
 
     public class UpdateContentHandler : IRequestHandler<UpdateContent, Content>
     {
         private readonly CellContext _context;
+        private readonly IMapper _mapper;
 
-        public UpdateContentHandler(CellContext context)
+        public UpdateContentHandler(CellContext context, IMapper mapper)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public Task<Content> Handle(UpdateContent request, CancellationToken cancellationToken)
@@ -73,23 +67,24 @@ namespace CellCms.Api.Features.Contents
                 throw new ArgumentNullException(nameof(request));
             }
 
-            return UpdateFeedInternalAsync(request.Id, request.Titulo, request.Corpo, request.ContentTags.Select(c => new ContentTag { TagId = c.TagId }), cancellationToken);
+            var model = _mapper.Map<Content>(request);
+
+            return UpdateFeedInternalAsync(model, cancellationToken);
         }
 
-        private async Task<Content> UpdateFeedInternalAsync(int id, string titulo, string corpo, IEnumerable<ContentTag> contentTags, CancellationToken cancellationToken)
+        private async Task<Content> UpdateFeedInternalAsync(Content updatedContent, CancellationToken cancellationToken)
         {
             var existingContent = await _context
                 .Contents
-                .FindAsync(new object[] { id }, cancellationToken);
+                .Include(c => c.ContentTags)
+                .SingleOrDefaultAsync(c => c.Id == updatedContent.Id, cancellationToken);
 
             if (existingContent is null)
             {
-                throw new KeyNotFoundException($"Não foi encontrado um Content com id {id}");
+                throw new KeyNotFoundException($"Não foi encontrado um Content com id {updatedContent.Id}");
             }
 
-            existingContent.Titulo = titulo;
-            existingContent.Corpo = corpo;
-            existingContent.ContentTags = contentTags.ToHashSet();
+            _mapper.Map(updatedContent, existingContent);
 
             await _context.SaveChangesAsync(cancellationToken);
             return existingContent;

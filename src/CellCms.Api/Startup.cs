@@ -1,5 +1,7 @@
 using System;
 
+using AutoMapper;
+
 using FluentValidation.AspNetCore;
 
 using MediatR;
@@ -50,6 +52,9 @@ namespace CellCms.Api
 
             // Adicionando os elementos do MediatR à injeção de dependência
             services.AddMediatR(GetType().Assembly);
+
+            // Adicionando os nossos Profiles à injeção de dependência
+            services.AddAutoMapper(GetType().Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
