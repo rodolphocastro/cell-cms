@@ -22,6 +22,7 @@
 + `feature/refactor-context`: Refatora para que a configuração de Persistência fique separado do `Startup.cs`
 + `feature/migrate-on-run`: Permite que a database seja automaticamente migrada durante a inicialização
 + `feature/auto-mapper`: Permite o mapeamento automático entre models, commands e queries
++ `feature/serilog-appsettings`: Permite a configuração do Serilog através do `appsettings.json`
 
 ### [Em Desenvolvimento] - Corrigido
 
