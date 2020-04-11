@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using Newtonsoft.Json;
+using Serilog;
 
 namespace CellCms.Api
 {
@@ -64,6 +65,9 @@ namespace CellCms.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            // Utilizando o Serilog para log das requests
+            app.UseSerilogRequestLogging();
 
             // Usando o Middleware para expor o swagger.json
             app.UseCellSwaggerJson();
