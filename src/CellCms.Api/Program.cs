@@ -12,6 +12,7 @@ namespace CellCms.Api
     {
         public static void Main(string[] args)
         {
+            // TODO: Mover configurações para o appsettings
             // Criando a instância do Logger que utilizaremos na API
             Log.Logger = new LoggerConfiguration()
 #if DEBUG
@@ -20,9 +21,10 @@ namespace CellCms.Api
                 .MinimumLevel.Information() // Senão, apenas informações
 #endif
                 // Indicando que queremos mensagens Information que vierem do Namespace Microsoft
-                .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Information)
+                .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Warning)
                 // Indicando que queremos mensagens Warning ou maiores que vierem do Namespace Microsoft.EntityFrameworkCore
                 .MinimumLevel.Override("Microsoft.EntityFrameworkCore", Serilog.Events.LogEventLevel.Warning)
+                .MinimumLevel.Override("Microsoft.Hosting.Lifetime", Serilog.Events.LogEventLevel.Information)
                 .Enrich.FromLogContext()    // Indicando que é pra utilizar enriquecer os logs automaticamente com o contexto de execução
                 .WriteTo.Console()          // Indicando que os logs devem ser apresentados no console
                 .WriteTo.File(new CompactJsonFormatter(), "logs/log.txt", rollingInterval: RollingInterval.Day) // Indicando que os logs devem ser salvos em um txt para cada dia
