@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using Newtonsoft.Json;
+
 using Serilog;
 
 namespace CellCms.Api
@@ -59,6 +60,9 @@ namespace CellCms.Api
 
             // Adicionando os serviços do ApplicationInsights
             services.AddApplicationInsightsTelemetry(_configuration);
+
+            // Adicionando os serviços de HealthCheck
+            services.AddHealthChecks();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -82,7 +86,11 @@ namespace CellCms.Api
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => endpoints.MapControllers());
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health");
+            });
 
             // Usando o Middleware para export o SwaggerUi
             app.UseCellSwaggerUi(_configuration);
