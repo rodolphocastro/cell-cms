@@ -56,7 +56,9 @@ namespace CellCms.Api
 
             // Adicionando os nossos Profiles à injeção de dependência
             services.AddAutoMapper(GetType().Assembly);
-            services.AddApplicationInsightsTelemetry();
+
+            // Adicionando os serviços do ApplicationInsights
+            services.AddApplicationInsightsTelemetry(_configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
