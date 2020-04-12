@@ -14,6 +14,7 @@
 + Validação dos payloads através do **FluentValidation**
 + `.editorconfig` para reforçar *code style*
 + Logs estruturados através do **Serilog**
++ Monitoramento através do **ApplicationInsights**
 
 ### [Em Desenvolvimento] - Alterado
 
