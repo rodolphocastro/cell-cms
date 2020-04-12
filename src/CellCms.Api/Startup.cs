@@ -62,7 +62,9 @@ namespace CellCms.Api
             services.AddApplicationInsightsTelemetry(_configuration);
 
             // Adicionando os serviços de HealthCheck
-            services.AddHealthChecks();
+            services
+                .AddHealthChecks()
+                .AddDbContextCheck<CellContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
