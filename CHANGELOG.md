@@ -15,6 +15,7 @@
 + `.editorconfig` para reforçar *code style*
 + Logs estruturados através do **Serilog**
 + Monitoramento através do **ApplicationInsights**
++ **HealthChecks** para expor status da API
 
 ### [Em Desenvolvimento] - Alterado
 
