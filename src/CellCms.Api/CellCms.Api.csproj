@@ -6,6 +6,7 @@
     <ApplicationInsightsResourceId>/subscriptions/76bdb027-5c55-41d3-8ac4-43e2e2717ac6/resourcegroups/Default-ApplicationInsights-EastUS/providers/microsoft.insights/components/CellCms.Api</ApplicationInsightsResourceId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..</DockerfileContext>
+    <DockerfileTag>cell-cms</DockerfileTag>
   </PropertyGroup>
 
   <ItemGroup>

@@ -16,6 +16,7 @@
 **/charts
 **/docker-compose*
 **/Dockerfile*
+**/logs
 **/node_modules
 **/npm-debug.log
 **/obj
@@ -23,3 +24,4 @@
 **/values.dev.yaml
 LICENSE
 README.md
+CHANGELOG.md
