@@ -4,6 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>65dd841a-d95b-442c-8d61-dbc824e4f10f</UserSecretsId>
     <ApplicationInsightsResourceId>/subscriptions/76bdb027-5c55-41d3-8ac4-43e2e2717ac6/resourcegroups/Default-ApplicationInsights-EastUS/providers/microsoft.insights/components/CellCms.Api</ApplicationInsightsResourceId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>
@@ -32,6 +34,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.2" />
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="3.1.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
     <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
     <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="3.1.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.1.0" />
