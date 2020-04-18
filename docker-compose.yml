@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  cellcms.api:
+    image: ${DOCKER_REGISTRY-}cellcmsapi
+    build:
+      context: .
+      dockerfile: src/CellCms.Api/Dockerfile
