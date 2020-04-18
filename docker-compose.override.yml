@@ -1,7 +1,8 @@
 version: '3.4'
 
 services:
-  cellcms.api:
+
+  api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80

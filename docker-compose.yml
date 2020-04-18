@@ -1,7 +1,8 @@
 version: '3.4'
 
 services:
-  cellcms.api:
+
+  api:
     image: ${DOCKER_REGISTRY-}cellcmsapi
     build:
       context: .
