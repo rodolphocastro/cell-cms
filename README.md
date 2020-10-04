@@ -1,5 +1,10 @@
 # Cell CMS
 
+| Branch | Status |
+| ------ | ------ |
+| Master (stable) | ![Build and Test](https://github.com/rodolphocastro/cell-cms/workflows/Build%20and%20Test/badge.svg?branch=master)|
+| Develop (latest) | ![Build and Test](https://github.com/rodolphocastro/cell-cms/workflows/Build%20and%20Test/badge.svg?branch=develop) |
+
 **Cell CMS** é um content management system que visa ser:
 
 + Leve
