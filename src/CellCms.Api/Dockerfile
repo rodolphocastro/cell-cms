@@ -1,6 +1,6 @@
 
 # 1: Utilizando a imagem Alpine com o .NET Runtime 3.1
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-alpine AS base
+FROM mcr.microsoft.com/dotnet/aspnet:5.0-alpine AS base
 # 2: Navegue/crie a pasta /app
 WORKDIR /app
 # 3: Exponha a porta 80 (http)
@@ -9,7 +9,7 @@ EXPOSE 80
 EXPOSE 443
 
 # 5: Utilizando a imagem Alpine com o .NET SDK 3.1
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1-alpine AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine AS build
 # 6: Navegue/crie a pasta /src
 WORKDIR /src
 # 7: Copie o .csproj da API (host) para o diretório (da imagem) src/CellCms.Api/
