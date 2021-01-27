@@ -21,6 +21,5 @@ jobs:
       run: dotnet restore cell-cms.sln
     - name: Build
       run: dotnet build --configuration Release --no-restore  cell-cms.sln
-    # Descomentar após criarmos testes pro projeto
-    #- name: Test
-    #  run: dotnet test --no-restore --verbosity normal  cell-cms.sln
+    - name: Test
+      run: dotnet test --no-restore cell-cms.sln

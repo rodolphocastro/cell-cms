@@ -4,6 +4,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+
+using CellCms.Api.Models;
+
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
@@ -64,6 +67,7 @@ namespace CellCms.Api.Features.Feeds
         {
             var result = await _context
                 .Feeds
+                .AllFeeds()
                 .AsNoTracking() // Indicando para o EF Core que vamos fazer apenas operações de leitura
                 .Include(f => f.Contents)
                 .Include(f => f.Tags)

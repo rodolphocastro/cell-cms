@@ -8,6 +8,8 @@ using FluentValidation;
 
 using MediatR;
 
+using Microsoft.EntityFrameworkCore;
+
 namespace CellCms.Api.Features.Feeds
 {
     /// <summary>
@@ -66,7 +68,8 @@ namespace CellCms.Api.Features.Feeds
         {
             var existingFeed = await _context
                 .Feeds
-                .FindAsync(new object[] { updated.Id }, cancellationToken);
+                .WithId(updated.Id)
+                .SingleOrDefaultAsync(cancellationToken);
 
             if (existingFeed is null)
             {

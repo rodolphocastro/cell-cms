@@ -97,7 +97,7 @@ namespace CellCms.Api.Features.Contents
 
             try
             {
-                var result = await _mediator.Send(command);
+                _ = await _mediator.Send(command);
                 return NoContent();
             }
             catch (KeyNotFoundException)

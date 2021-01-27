@@ -55,7 +55,6 @@ namespace CellCms.Api.Features.Feeds
                 throw new ArgumentNullException(nameof(request));
             }
 
-            // TODO: Futuramente mapear de maneira automatica
             var feed = _mapper.Map<Feed>(request);
 
             // Separamos os métodos para que o compilador possa otimizar.
