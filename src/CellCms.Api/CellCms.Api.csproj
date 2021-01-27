@@ -11,6 +11,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <InternalsVisibleTo Include="CellCms.Tests.Unit" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="logs\**" />
     <Content Remove="logs\**" />
     <EmbeddedResource Remove="logs\**" />

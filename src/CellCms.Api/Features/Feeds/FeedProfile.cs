@@ -14,9 +14,14 @@ namespace CellCms.Api.Features.Feeds
         public FeedProfile()
         {
             // Aqui indicamos para o AutoMapper criar, por inferência, o mapeamento entre o CreateFeed e o Feed
-            CreateMap<CreateFeed, Feed>();
+            CreateMap<CreateFeed, Feed>()
+                .ForMember(d => d.Nome, opt => opt.MapFrom(s => s.Nome))
+                .ForAllOtherMembers(opt => opt.Ignore());
             // Aqui indicamos para o AutoMapper criar, por inferência, o mapeamento entre o UpdateFeed e o Feed
-            CreateMap<UpdateFeed, Feed>();
+            CreateMap<UpdateFeed, Feed>()
+                .ForMember(d => d.Id, opt => opt.MapFrom(s => s.Id))
+                .ForMember(d => d.Nome, opt => opt.MapFrom(s => s.Nome))
+                .ForAllOtherMembers(opt => opt.Ignore());
             // Aqui indicamos que o AutoMapepr poderá mapear entre dois objetos do mesmo tipo
             // Porém dizemos que algumas propriedades devem ser ignoradas!
             // Isso é muito importante para não acabarmos atualizando campos que não queremos! Por exemplo relacionamentos!

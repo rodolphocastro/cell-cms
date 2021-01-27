@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -67,14 +66,6 @@ namespace CellCms.Api.Features.Contents
             {
                 throw new ArgumentNullException(nameof(request));
             }
-
-            //var model = new Content
-            //{
-            //    FeedId = request.FeedId,
-            //    Titulo = request.Titulo,
-            //    Corpo = request.Corpo,
-            //    ContentTags = request.ContentTags.Select(c => new ContentTag { TagId = c.TagId }).ToHashSet()
-            //};
 
             var model = _mapper.Map<Content>(request);
 

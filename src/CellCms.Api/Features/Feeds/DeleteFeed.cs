@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
+using CellCms.Api.Models;
+
 using MediatR;
+
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CellCms.Api.Features.Feeds
 {
@@ -43,7 +47,9 @@ namespace CellCms.Api.Features.Feeds
         {
             var existingFeed = await _context
                 .Feeds
-                .FindAsync(new object[] { id }, cancellationToken);
+                .WithId(id)
+                .SingleOrDefaultAsync(cancellationToken);
+
             if (existingFeed is null)
             {
                 throw new KeyNotFoundException($"Não foi encontrado um feed com id {id}");
