@@ -33,12 +33,16 @@ namespace CellCms.Api.Features.Contents
 
             try
             {
-                var result = await _mediator.Send(command);
+                var result = await _mediator.Send(command, this.GetRequestCancellationToken());
                 return Created(string.Empty, result);
             }
             catch (KeyNotFoundException)
             {
                 return NotFound();
+            }
+            catch (TaskCanceledException)
+            {
+                return NoContent();
             }
             catch (Exception ex)
             {
@@ -52,12 +56,16 @@ namespace CellCms.Api.Features.Contents
         {
             try
             {
-                var result = await _mediator.Send(query);
+                var result = await _mediator.Send(query, this.GetRequestCancellationToken());
                 return Ok(result);
             }
             catch (KeyNotFoundException)
             {
                 return NotFound();
+            }
+            catch (TaskCanceledException)
+            {
+                return NoContent();
             }
             catch (Exception ex)
             {
@@ -72,12 +80,16 @@ namespace CellCms.Api.Features.Contents
         {
             try
             {
-                _ = await _mediator.Send(command);
+                _ = await _mediator.Send(command, this.GetRequestCancellationToken());
                 return NoContent();
             }
             catch (KeyNotFoundException)
             {
                 return NotFound();
+            }
+            catch (TaskCanceledException)
+            {
+                return NoContent();
             }
             catch (Exception ex)
             {
@@ -97,12 +109,16 @@ namespace CellCms.Api.Features.Contents
 
             try
             {
-                _ = await _mediator.Send(command);
+                _ = await _mediator.Send(command, this.GetRequestCancellationToken());
                 return NoContent();
             }
             catch (KeyNotFoundException)
             {
                 return NotFound();
+            }
+            catch (TaskCanceledException)
+            {
+                return NoContent();
             }
             catch (Exception ex)
             {
