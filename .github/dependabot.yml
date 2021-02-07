@@ -6,7 +6,3 @@ updates:
     directory: "/src/CellCms.Api" # Main API project
     schedule:
       interval: "daily"
-  - package-ecosystem: "nuget"
-    directory: "/tests/CellCms.Tests.Unit" # Unit Tests
-    schedule:
-      interval: "weekly"
