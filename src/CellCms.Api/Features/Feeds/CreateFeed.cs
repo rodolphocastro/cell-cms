@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+
 using AutoMapper;
+
 using CellCms.Api.Models;
 
 using FluentValidation;
@@ -33,7 +35,7 @@ namespace CellCms.Api.Features.Feeds
                 .MaximumLength(200);
         }
     }
-    
+
     /// <summary>
     /// Handler para a criação de feeds.
     /// </summary>
@@ -58,7 +60,7 @@ namespace CellCms.Api.Features.Feeds
             var feed = _mapper.Map<Feed>(request);
 
             // Separamos os métodos para que o compilador possa otimizar.
-            // No método principal realizamos apenas operações sincronas
+            // No método principal realizamos apenas operações síncronas
             // No método interno realizamos as operações assíncronas
             return CreateFeedInternalAsync(feed, cancellationToken);
         }

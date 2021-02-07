@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CellCms.Api.Features.Feeds
 {
+
     [Route("api/[controller]")]
     public class FeedController : ControllerBase
     {
@@ -34,17 +35,16 @@ namespace CellCms.Api.Features.Feeds
 
             try
             {
-                var result = await _mediator.Send(command);
+                var result = await _mediator.Send(command, this.GetRequestCancellationToken());
                 return Created(string.Empty, result);
             }
-            catch (ArgumentException ex)
+            catch (TaskCanceledException)
             {
-                // Futuramente será tratado pelo ModelState.
-                return BadRequest(ex.Message);
+                return NoContent();
             }
             catch (Exception ex)
             {
-                // Caso seja algum erro que não esperavamos, vamos fazer um log decente deste erro.
+                // Caso seja algum erro que não esperávamos, vamos fazer um log decente deste erro.
                 _logger.LogError(ex, "Erro ao tentar criar um novo Feed: {@Command}", command);
                 throw;
             }
@@ -56,8 +56,12 @@ namespace CellCms.Api.Features.Feeds
             var query = new ListAllFeeds();
             try
             {
-                var result = await _mediator.Send(query);
+                var result = await _mediator.Send(query, this.GetRequestCancellationToken());
                 return Ok(result);
+            }
+            catch (TaskCanceledException)
+            {
+                return NoContent();
             }
             catch (Exception ex)
             {
@@ -78,12 +82,16 @@ namespace CellCms.Api.Features.Feeds
 
             try
             {
-                await _mediator.Send(command);
+                await _mediator.Send(command, this.GetRequestCancellationToken());
                 return NoContent();
             }
             catch (KeyNotFoundException)
             {
                 return NotFound();
+            }
+            catch (TaskCanceledException)
+            {
+                return NoContent();
             }
             catch (Exception ex)
             {
@@ -98,12 +106,16 @@ namespace CellCms.Api.Features.Feeds
         {
             try
             {
-                await _mediator.Send(command);
+                await _mediator.Send(command, this.GetRequestCancellationToken());
                 return NoContent();
             }
             catch (KeyNotFoundException)
             {
                 return NotFound();
+            }
+            catch (TaskCanceledException)
+            {
+                return NoContent();
             }
             catch (Exception ex)
             {
