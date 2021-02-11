@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 
+using CellCms.Api.Constants;
 using CellCms.Tests.Unit.Utils;
 
 using FluentAssertions;
@@ -93,48 +94,5 @@ namespace CellCms.Tests.Unit.Features.Management
                 .NotBeNull().And
                 .Contain(allFeatures);
         }
-    }
-
-    /// <summary>
-    /// Constantes para controle de Features.
-    /// </summary>
-    internal class FeatureConstants
-    {
-        /// <summary>
-        /// Flag para funções básicas de CMS.
-        /// </summary>
-        internal static readonly string BasicCMS = nameof(BasicCMS);
-
-        /// <summary>
-        /// Flag para ativar um endpoint GraphQL.
-        /// </summary>
-        internal static readonly string GraphQL = nameof(GraphQL);
-
-        /// <summary>
-        /// Flag para ativar um Feed RSS.
-        /// </summary>
-        internal static readonly string RssFeed = nameof(RssFeed);
-
-        /// <summary>
-        /// Flag para API de métricas de uso.
-        /// </summary>
-        internal static readonly string Metrics = nameof(Metrics);
-
-        /// <summary>
-        /// Flag para a API de processamento de Intents.
-        /// </summary>
-        internal static readonly string BotIntentApi = nameof(BotIntentApi);
-
-        /// <summary>
-        /// Todas as Features disponíveis.
-        /// </summary>
-        internal static readonly IEnumerable<string> AllFeaturesNames = new List<string>
-        {
-            BasicCMS,
-            GraphQL,
-            RssFeed,
-            Metrics,
-            BotIntentApi
-        };
     }
 }
