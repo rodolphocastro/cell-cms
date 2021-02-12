@@ -4,11 +4,17 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
+using AutoFixture.Xunit2;
+
 using CellCms.Tests.Unit.Utils;
 
 using FluentAssertions;
 
 using MediatR;
+
+using Microsoft.FeatureManagement;
+
+using NSubstitute;
 
 using Xunit;
 
@@ -80,7 +86,7 @@ namespace CellCms.Tests.Unit.Features.Management
         [Trait(TraitsConstants.Category.Name, TraitsConstants.Category.Values.Unit)]
         [Trait(TraitsConstants.Label.Name, TraitsConstants.Label.Values.Feature)]
         public class ListFeaturesHandlerTests
-        {            
+        {
             [Theory, CreateData]
             public async Task Handle_NullRequest_ArgumentNullException(
                 ListFeaturesHandler subject)
@@ -94,10 +100,62 @@ namespace CellCms.Tests.Unit.Features.Management
                 await act.Should().ThrowExactlyAsync<ArgumentNullException>();
             }
 
-            // TODO: Write behavior tests
+
+            [Theory, CreateData]
+            public async Task Handle_EnabledOnly_IEnumerable(
+                ListFeatures query,
+                IDictionary<string, bool> featuresResult,
+                [Frozen] IFeatureManager features,
+                ListFeaturesHandler subject)
+            {
+                // Arrange
+                query.EnabledOnly = true;
+                foreach (KeyValuePair<string, bool> featPair in featuresResult)
+                {
+                    features
+                        .IsEnabledAsync(featPair.Key)
+                        .Returns(featPair.Value);
+                }
+
+                // Act
+                var result = await subject.Handle(query, default);
+
+                // Assert
+                result
+                    .Should()
+                    .OnlyContain(r => r.Status);
+            }
+
+            [Theory, CreateData]
+            public async Task Handle_DisabledOnly_IEnumerable(
+                ListFeatures query,
+                IDictionary<string, bool> featuresResult,
+                [Frozen] IFeatureManager features,
+                ListFeaturesHandler subject)
+            {
+                // Arrange
+                query.EnabledOnly = false;
+                foreach (KeyValuePair<string, bool> featPair in featuresResult)
+                {
+                    features
+                        .IsEnabledAsync(featPair.Key)
+                        .Returns(featPair.Value);
+                }
+
+                // Act
+                var result = await subject.Handle(query, default);
+
+                // Assert
+                result
+                    .Should()
+                    .Contain(c => c.Status || !c.Status);
+            }
         }
     }
 
+    /// <summary>
+    /// Handler para Listar Features
+    /// </summary>
     public class ListFeaturesHandler : IRequestHandler<ListFeatures, IEnumerable<ListFeaturesResponse>>
     {
         public ListFeaturesHandler()
