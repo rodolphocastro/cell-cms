@@ -129,7 +129,7 @@ namespace CellCms.Tests.Unit.Features.Management
                 // Assert
                 result
                     .Should()
-                    .OnlyContain(r => r.Status);
+                    .NotContain(r => !r.Status);
             }
 
             [Theory, CreateData]
