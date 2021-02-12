@@ -1,11 +1,12 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 using AutoFixture.Xunit2;
 
+using CellCms.Api.Constants;
 using CellCms.Tests.Unit.Utils;
 
 using FluentAssertions;
@@ -87,6 +88,21 @@ namespace CellCms.Tests.Unit.Features.Management
         [Trait(TraitsConstants.Label.Name, TraitsConstants.Label.Values.Feature)]
         public class ListFeaturesHandlerTests
         {
+            /// <summary>
+            /// Helper to feed random features into IFeatureManager.
+            /// </summary>
+            /// <param name="rand"></param>
+            /// <param name="features"></param>
+            private static void SetupRandomFeatures(Random rand, IFeatureManager features)
+            {
+                foreach (var featName in FeatureConstants.AllFeaturesNames)
+                {
+                    features
+                        .IsEnabledAsync(featName)
+                        .Returns(rand.NextDouble() >= .5d);
+                }
+            }
+
             [Theory, CreateData]
             public async Task Handle_NullRequest_ArgumentNullException(
                 ListFeaturesHandler subject)
@@ -102,20 +118,15 @@ namespace CellCms.Tests.Unit.Features.Management
 
 
             [Theory, CreateData]
-            public async Task Handle_EnabledOnly_IEnumerable(
+            public async Task Handle_EnabledOnly_FilteredConsts(
                 ListFeatures query,
-                IDictionary<string, bool> featuresResult,
+                Random rand,
                 [Frozen] IFeatureManager features,
-                ListFeaturesHandler subject)
+                [Greedy] ListFeaturesHandler subject)
             {
                 // Arrange
                 query.EnabledOnly = true;
-                foreach (KeyValuePair<string, bool> featPair in featuresResult)
-                {
-                    features
-                        .IsEnabledAsync(featPair.Key)
-                        .Returns(featPair.Value);
-                }
+                SetupRandomFeatures(rand, features);
 
                 // Act
                 var result = await subject.Handle(query, default);
@@ -127,20 +138,15 @@ namespace CellCms.Tests.Unit.Features.Management
             }
 
             [Theory, CreateData]
-            public async Task Handle_DisabledOnly_IEnumerable(
+            public async Task Handle_All_AllConsts(
                 ListFeatures query,
-                IDictionary<string, bool> featuresResult,
+                Random rand,
                 [Frozen] IFeatureManager features,
-                ListFeaturesHandler subject)
+                [Greedy] ListFeaturesHandler subject)
             {
                 // Arrange
                 query.EnabledOnly = false;
-                foreach (KeyValuePair<string, bool> featPair in featuresResult)
-                {
-                    features
-                        .IsEnabledAsync(featPair.Key)
-                        .Returns(featPair.Value);
-                }
+                SetupRandomFeatures(rand, features);
 
                 // Act
                 var result = await subject.Handle(query, default);
@@ -148,7 +154,7 @@ namespace CellCms.Tests.Unit.Features.Management
                 // Assert
                 result
                     .Should()
-                    .Contain(c => c.Status || !c.Status);
+                    .HaveSameCount(FeatureConstants.AllFeaturesNames);
             }
         }
     }
@@ -158,12 +164,44 @@ namespace CellCms.Tests.Unit.Features.Management
     /// </summary>
     public class ListFeaturesHandler : IRequestHandler<ListFeatures, IEnumerable<ListFeaturesResponse>>
     {
-        public ListFeaturesHandler()
-        {
+        private readonly IFeatureManager _featureManager;
+        private readonly IEnumerable<string> _features;
 
+        public ListFeaturesHandler(IFeatureManager featureManager) : this()
+        {
+            _featureManager = featureManager ?? throw new ArgumentNullException(nameof(featureManager));
         }
 
-        public Task<IEnumerable<ListFeaturesResponse>> Handle(ListFeatures request, CancellationToken cancellationToken) => throw new System.NotImplementedException();
+        public ListFeaturesHandler()
+        {
+            _features = FeatureConstants.AllFeaturesNames;
+        }
+
+        public Task<IEnumerable<ListFeaturesResponse>> Handle(ListFeatures request, CancellationToken cancellationToken)
+        {
+            if (request is null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            return HandleInternalAsync(request.EnabledOnly, cancellationToken);
+        }
+
+        private async Task<IEnumerable<ListFeaturesResponse>> HandleInternalAsync(bool enabledOnly, CancellationToken cancellationToken)
+        {
+            List<ListFeaturesResponse> result = new List<ListFeaturesResponse>();
+
+            foreach (var feat in _features)
+            {
+                result.Add(new ListFeaturesResponse
+                {
+                    Name = feat,
+                    Status = await _featureManager.IsEnabledAsync(feat)
+                });
+            }
+
+            return enabledOnly ? result.Where(r => r.Status) : result;
+        }
     }
 
     /// <summary>
@@ -178,7 +216,7 @@ namespace CellCms.Tests.Unit.Features.Management
         /// <summary>
         /// Filtrar por ativas
         /// </summary>
-        public bool EnabledOnly { get; set; }
+        public bool EnabledOnly { get; set; } = true;
     }
 
     /// <summary>
@@ -198,6 +236,6 @@ namespace CellCms.Tests.Unit.Features.Management
         /// <summary>
         /// Nome da Feature.
         /// </summary>
-        public string Name { get; init; }
+        public string Name { get; init; } = string.Empty;
     }
 }
