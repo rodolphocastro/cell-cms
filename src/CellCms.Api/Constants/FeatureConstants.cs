@@ -8,6 +8,11 @@ namespace CellCms.Api.Constants
     public class FeatureConstants
     {
         /// <summary>
+        /// Chave para acesso às configurações de Features.
+        /// </summary>
+        public const string FeaturesConfigKey = "Features";
+
+        /// <summary>
         /// Flag para funções básicas de CMS.
         /// </summary>
         public const string BasicCMS = nameof(BasicCMS);

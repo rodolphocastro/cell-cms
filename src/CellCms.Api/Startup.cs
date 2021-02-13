@@ -1,6 +1,6 @@
 using System;
 
-using AutoMapper;
+using CellCms.Api.Constants;
 
 using FluentValidation.AspNetCore;
 
@@ -63,7 +63,7 @@ namespace CellCms.Api
             services.AddApplicationInsightsTelemetry(_configuration);
 
             // Adicionando
-            services.AddFeatureManagement(_configuration.GetSection("Features"));
+            services.AddFeatureManagement(_configuration.GetSection(FeatureConstants.FeaturesConfigKey));
 
             // Adicionando os serviços de HealthCheck
             services
