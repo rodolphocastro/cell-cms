@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CellCms.Api.Features.Contents
 {
-    [Route("api/[controller]")]
+    [Route(ControllerBaseExtensions.DefaultRoute)]
     public class ContentsController : ControllerBase
     {
         private readonly ILogger<ContentsController> _logger;

@@ -10,6 +10,11 @@ namespace CellCms.Api.Features
     public static class ControllerBaseExtensions
     {
         /// <summary>
+        /// Roda padrão para um Controller do projeto.
+        /// </summary>
+        public const string DefaultRoute = "api/[controller]";
+
+        /// <summary>
         /// Obtém um CancellationToken de uma Request HTTP OU cria um novo.
         /// </summary>
         /// <param name="controller"></param>

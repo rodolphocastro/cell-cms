@@ -12,7 +12,7 @@ namespace CellCms.Api.Features.Management
     /// <summary>
     /// Controller for management 
     /// </summary>
-    [Route("api/[controller]")]
+    [Route(ControllerBaseExtensions.DefaultRoute)]
     public class ManagementController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -22,8 +22,8 @@ namespace CellCms.Api.Features.Management
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
-        [HttpGet]
-        public async Task<IActionResult> ListFeatures(ListFeatures query)
+        [HttpGet("features")]
+        public async Task<IActionResult> ListFeatures([FromQuery] ListFeatures query)
         {
             try
             {
