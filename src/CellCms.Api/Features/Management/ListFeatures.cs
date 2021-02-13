@@ -62,7 +62,7 @@ namespace CellCms.Tests.Unit.Features.Management
             _featureManager = featureManager ?? throw new ArgumentNullException(nameof(featureManager));
         }
 
-        public ListFeaturesHandler()
+        private ListFeaturesHandler()
         {
             _features = FeatureConstants.AllFeaturesNames;
         }

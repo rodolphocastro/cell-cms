@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 using AutoFixture.Xunit2;
 
-using CellCms.Api.Features;
+using CellCms.Api.Features.Management;
 using CellCms.Tests.Unit.Utils;
 
 using FluentAssertions;
@@ -66,33 +65,6 @@ namespace CellCms.Tests.Unit.Features.Management
             result.Should()
                 .NotBeNull().And
                 .BeOfType<NoContentResult>();
-        }
-    }
-
-    /// <summary>
-    /// Controller for management 
-    /// </summary>
-    public class ManagementController : ControllerBase
-    {
-        private readonly IMediator _mediator;
-
-        public ManagementController(IMediator mediator)
-        {
-            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> ListFeatures(ListFeatures query)
-        {
-            try
-            {
-                var result = await _mediator.Send(query, this.GetRequestCancellationToken());
-                return Ok(result);
-            }
-            catch (TaskCanceledException)
-            {
-                return NoContent();
-            }
         }
     }
 }
