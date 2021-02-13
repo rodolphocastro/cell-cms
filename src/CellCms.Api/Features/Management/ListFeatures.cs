@@ -8,6 +8,7 @@ using CellCms.Api.Constants;
 
 using MediatR;
 
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.FeatureManagement;
 
 namespace CellCms.Tests.Unit.Features.Management
@@ -24,6 +25,7 @@ namespace CellCms.Tests.Unit.Features.Management
         /// <summary>
         /// Filtrar por ativas
         /// </summary>
+        [FromQuery]
         public bool EnabledOnly { get; set; } = true;
     }
 

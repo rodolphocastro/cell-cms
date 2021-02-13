@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 using AutoFixture.Xunit2;
 
+using CellCms.Api.Features;
 using CellCms.Tests.Unit.Utils;
 
 using FluentAssertions;
@@ -71,8 +72,27 @@ namespace CellCms.Tests.Unit.Features.Management
     /// <summary>
     /// Controller for management 
     /// </summary>
-    public class ManagementController
+    public class ManagementController : ControllerBase
     {
-        public Task<IActionResult> ListFeatures(ListFeatures query) => throw new NotImplementedException();
+        private readonly IMediator _mediator;
+
+        public ManagementController(IMediator mediator)
+        {
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ListFeatures(ListFeatures query)
+        {
+            try
+            {
+                var result = await _mediator.Send(query, this.GetRequestCancellationToken());
+                return Ok(result);
+            }
+            catch (TaskCanceledException)
+            {
+                return NoContent();
+            }
+        }
     }
 }
