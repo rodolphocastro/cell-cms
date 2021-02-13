@@ -63,7 +63,7 @@ namespace CellCms.Api
             services.AddApplicationInsightsTelemetry(_configuration);
 
             // Adicionando
-            services.AddFeatureManagement(_configuration);
+            services.AddFeatureManagement(_configuration.GetSection("Features"));
 
             // Adicionando os serviços de HealthCheck
             services
