@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CellCms.Api.Features.Tags
 {
-    [Route("api/[controller]")]
+    [Route(ControllerBaseExtensions.DefaultRoute)]
     public class TagsController : ControllerBase
     {
         private readonly ILogger<TagsController> _logger;

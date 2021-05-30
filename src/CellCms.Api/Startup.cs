@@ -1,6 +1,6 @@
 using System;
 
-using AutoMapper;
+using CellCms.Api.Constants;
 
 using FluentValidation.AspNetCore;
 
@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.FeatureManagement;
 
 using Newtonsoft.Json;
 
@@ -60,6 +61,9 @@ namespace CellCms.Api
 
             // Adicionando os serviços do ApplicationInsights
             services.AddApplicationInsightsTelemetry(_configuration);
+
+            // Adicionando
+            services.AddFeatureManagement(_configuration.GetSection(FeatureConstants.FeaturesConfigKey));
 
             // Adicionando os serviços de HealthCheck
             services

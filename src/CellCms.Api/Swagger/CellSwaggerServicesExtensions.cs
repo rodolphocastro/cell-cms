@@ -22,11 +22,9 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns></returns>
         public static IServiceCollection AddCellSwagger(this IServiceCollection services, IConfiguration configuration)
         {
-            if (services is null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
-
+            _ = services ?? throw new ArgumentNullException(nameof(services));
+            _ = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            
             var aadSettings = configuration.GetAzureAdSettings();
 
             services.AddSwaggerGen(cfg =>

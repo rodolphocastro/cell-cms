@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 namespace CellCms.Api.Features.Feeds
 {
 
-    [Route("api/[controller]")]
+    [Route(ControllerBaseExtensions.DefaultRoute)]
     public class FeedController : ControllerBase
     {
         private readonly ILogger<FeedController> _logger;
