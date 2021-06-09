@@ -24,7 +24,6 @@ namespace CellCms.Api.Features.Feeds
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Create([FromBody] CreateFeed command)
         {
             // TODO: Futuramente vamos implementar estas validações
@@ -71,7 +70,6 @@ namespace CellCms.Api.Features.Feeds
         }
 
         [HttpPut]
-        [Authorize]
         public async Task<IActionResult> Update([FromBody] UpdateFeed command)
         {
             // TODO: Futuramente vamos implementar estas validações
@@ -101,7 +99,6 @@ namespace CellCms.Api.Features.Feeds
         }
 
         [HttpDelete("{id}")]
-        [Authorize]
         public async Task<IActionResult> Delete([FromRoute] DeleteFeed command)
         {
             try

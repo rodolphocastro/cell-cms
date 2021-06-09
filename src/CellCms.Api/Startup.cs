@@ -1,5 +1,6 @@
 using System;
 
+using CellCms.Api.Auth;
 using CellCms.Api.Constants;
 
 using FluentValidation.AspNetCore;
@@ -35,7 +36,7 @@ namespace CellCms.Api
             services.AddCellPersistence(_configuration);
 
             // Adicionando os serviços de autenticação
-            services.AddCellAuthentication(_configuration);
+            //services.AddCellAuthentication(_configuration);
 
             // Adicionando a geração do swagger.json
             services.AddCellSwagger(_configuration);
@@ -65,6 +66,9 @@ namespace CellCms.Api
             // Adicionando
             services.AddFeatureManagement(_configuration.GetSection(FeatureConstants.FeaturesConfigKey));
 
+            services.AddApiClient(cfg =>
+                _configuration.Bind(cfg));
+
             // Adicionando os serviços de HealthCheck
             services
                 .AddHealthChecks()
@@ -89,14 +93,13 @@ namespace CellCms.Api
 
             app.UseRouting();
 
-            app.UseAuthentication();
-            app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
                 endpoints.MapHealthChecks("/health");
             });
+
+            app.UseApiClients();
 
             // Usando o Middleware para export o SwaggerUi
             app.UseCellSwaggerUi(_configuration);

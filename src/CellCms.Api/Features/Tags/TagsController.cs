@@ -23,7 +23,7 @@ namespace CellCms.Api.Features.Tags
         }
 
         [HttpPost]
-        [Authorize]
+
         public async Task<IActionResult> Create([FromBody] CreateTag command)
         {
             if (!ModelState.IsValid)
@@ -80,7 +80,6 @@ namespace CellCms.Api.Features.Tags
         }
 
         [HttpDelete("{id}")]
-        [Authorize]
         public async Task<IActionResult> Delete([FromRoute] DeleteTag command)
         {
             try
@@ -104,7 +103,6 @@ namespace CellCms.Api.Features.Tags
         }
 
         [HttpPut]
-        [Authorize]
         public async Task<IActionResult> Update([FromBody] UpdateTag command)
         {
             if (!ModelState.IsValid)

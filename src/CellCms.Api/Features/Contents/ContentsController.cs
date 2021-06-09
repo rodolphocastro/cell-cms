@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 
 using MediatR;
 
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -23,7 +22,6 @@ namespace CellCms.Api.Features.Contents
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Create([FromBody] CreateContent command)
         {
             if (!ModelState.IsValid)
@@ -75,7 +73,6 @@ namespace CellCms.Api.Features.Contents
         }
 
         [HttpDelete("{id}")]
-        [Authorize]
         public async Task<IActionResult> Delete([FromRoute] DeleteContent command)
         {
             try
@@ -99,7 +96,6 @@ namespace CellCms.Api.Features.Contents
         }
 
         [HttpPut]
-        [Authorize]
         public async Task<IActionResult> Update([FromBody] UpdateContent command)
         {
             if (!ModelState.IsValid)
