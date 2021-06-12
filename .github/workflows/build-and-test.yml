@@ -13,21 +13,5 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 5.0.100
-    - name: Cache NuGets
-      uses: actions/cache@v2
-      with:
-        path: ~/.nuget/packages
-        # Look to see if there is a cache hit for the corresponding requirements file
-        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-nuget
-    - name: Install dependencies
-      run: dotnet restore cell-cms.sln
-    - name: Build
-      run: dotnet build --configuration Release --no-restore  cell-cms.sln
-    - name: Test
-      run: dotnet test --no-restore cell-cms.sln
+    - name: Build docker image
+      run: docker build --file src/CellCms.Api/Dockerfile .
