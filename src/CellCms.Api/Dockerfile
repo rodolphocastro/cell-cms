@@ -17,21 +17,33 @@ COPY ["src/CellCms.Api/CellCms.Api.csproj", "CellCms.Api/"]
 RUN dotnet restore "CellCms.Api/CellCms.Api.csproj"
 # 9: Copie o resto dos arquivos da pasta (host) para a imagem
 COPY ["src/", "."]
-# 10: Navegue � pasta do projeto API, na imagem
+
+# 10: Navegue/crie a pasta /tests
+WORKDIR /tests
+# 11: Copie o .csproj dos testes para a imagem
+COPY ["tests/CellCms.Tests.Unit/CellCms.Tests.Unit.csproj", "CellCms.Tests.Unit/"]
+# 12: Restaure as dependências (NuGet)
+RUN dotnet restore "CellCms.Tests.Unit/CellCms.Tests.Unit.csproj"
+# 13: Copie o resto
+COPY ["tests/", "."]
+# 14: Execute os testes
+RUN dotnet test "CellCms.Tests.Unit/CellCms.Tests.Unit.csproj"
+
+# 15: Navegue � pasta do projeto API, na imagem
 WORKDIR "/src/CellCms.Api"
-# 11: Compile o projeto, jogando os resultados na pasta /app/build
+# 16: Compile o projeto, jogando os resultados na pasta /app/build
 RUN dotnet build "CellCms.Api.csproj" -c Release -o /app/build
 
-# 12: Utilizando a imagem de build mas chamando-a de publish
+# 17: Utilizando a imagem de build mas chamando-a de publish
 FROM build AS publish
-# 13: Execute o publish do projeto, jogando os resultados na pasta /app/publish
+# 18: Execute o publish do projeto, jogando os resultados na pasta /app/publish
 RUN dotnet publish "CellCms.Api.csproj" -c Release -o /app/publish
 
-# 14: Utilizando a imagem base mas chamando-a de final
+# 19: Utilizando a imagem base mas chamando-a de final
 FROM base AS final
-# 15: Navegue/crie a pasta /app
+# 20: Navegue/crie a pasta /app
 WORKDIR /app
-# 16: Copie a pasta /app/publish da imagem publish para a pasta atual do final
+# 21: Copie a pasta /app/publish da imagem publish para a pasta atual do final
 COPY --from=publish /app/publish .
-# 17: Deixe registrado que, ao executar a imagem, o comando 'dotnet' deve ser chamado com o par�metro 'CellCms.Api.dll"
+# 22: Deixe registrado que, ao executar a imagem, o comando 'dotnet' deve ser chamado com o par�metro 'CellCms.Api.dll"
 ENTRYPOINT ["dotnet", "CellCms.Api.dll"]
