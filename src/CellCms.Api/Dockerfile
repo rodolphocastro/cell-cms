@@ -27,7 +27,8 @@ RUN dotnet restore "CellCms.Tests.Unit/CellCms.Tests.Unit.csproj"
 # 13: Copie o resto
 COPY ["tests/", "."]
 # 14: Execute os testes
-RUN dotnet test "CellCms.Tests.Unit/CellCms.Tests.Unit.csproj"
+RUN dotnet test "CellCms.Tests.Unit/CellCms.Tests.Unit.csproj" --collect:"XPlat Code Coverage"
+# TODO: Copiar code coverage para fora da imagem
 
 # 15: Navegue � pasta do projeto API, na imagem
 WORKDIR "/src/CellCms.Api"
