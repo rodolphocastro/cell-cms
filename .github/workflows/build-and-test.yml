@@ -7,11 +7,33 @@ on:
     branches: [ master, develop ]
 
 jobs:
+  # Fazer a build, sempre, para todas as branches
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Build docker image
       run: docker build --file src/CellCms.Api/Dockerfile .
+  
+  # Fazer publish apenas para develop e master
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    needs: build
+    if: github.ref == 'refs/head/master' || github.ref == 'refs/head/develop'
+    steps:
+      - name: "Login to GitHub registry"
+        uses: docker/login-action@v1
+        with:
+          registry: docker.pkg.github.com
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: "Publish the image"
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: |
+            docker.pkg.github.com/${{ github.repository }}/cell-cms:${{ github.sha }}
+            docker.pkg.github.com/${{ github.repository }}/cell-cms:${{ github.ref }}
