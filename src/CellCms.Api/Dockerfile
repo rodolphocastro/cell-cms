@@ -12,13 +12,13 @@ FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 # 6: Navegue/crie a pasta /src
 WORKDIR /src
 # 7: Copie o .csproj da API (host) para o diret�rio (da imagem) src/CellCms.Api/
-COPY ["src/CellCms.Api/CellCms.Api.csproj", "src/CellCms.Api/"]
+COPY ["src/CellCms.Api/CellCms.Api.csproj", "CellCms.Api/"]
 # 8: Restaure as depend�ncias (NuGet)
-RUN dotnet restore "src/CellCms.Api/CellCms.Api.csproj"
+RUN dotnet restore "CellCms.Api/CellCms.Api.csproj"
 # 9: Copie o resto dos arquivos da pasta (host) para a imagem
-COPY . .
+COPY ["src/", "."]
 # 10: Navegue � pasta do projeto API, na imagem
-WORKDIR "/src/src/CellCms.Api"
+WORKDIR "/src/CellCms.Api"
 # 11: Compile o projeto, jogando os resultados na pasta /app/build
 RUN dotnet build "CellCms.Api.csproj" -c Release -o /app/build
 
